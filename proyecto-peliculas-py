@@ -1,0 +1,75 @@
+import os
+
+class Pelicula:
+    def __init__(self, nombre):
+        self.__nombre = nombre  
+
+    def get_nombre(self):
+        return self.__nombre
+
+
+class CatalogoPeliculas:
+    def __init__(self, nombre, ruta_archivo):
+        self.nombre = nombre
+        self.ruta_archivo = ruta_archivo
+        if not os.path.exists(self.ruta_archivo):
+            with open(self.ruta_archivo, 'w') as archivo:
+                pass  
+
+    def agregar(self, pelicula):
+        with open(self.ruta_archivo, 'a') as archivo:
+            archivo.write(pelicula.get_nombre() + '\n')
+        print(f'Película "{pelicula.get_nombre()}" se agrego  al catálogo.')
+
+    def listar(self):
+        print("\n--- Lista de Películas🎬 ---")
+        try:
+            with open(self.ruta_archivo, 'r') as archivo:
+                peliculas = archivo.readlines()
+                if peliculas:
+                    for i, nombre in enumerate(peliculas, 1):
+                        print(f"{i}. {nombre.strip()}")
+                else:
+                    print("El catálogo está vacío.")
+        except FileNotFoundError:
+            print("El catálogo no existe.")
+
+    def eliminar(self):
+        if os.path.exists(self.ruta_archivo):
+            os.remove(self.ruta_archivo)
+            print("Catálogo eliminado🚮.")
+        else:
+            print("El catálogo no existe🤷🏽‍♀️.")
+
+
+def ejecutar_programa():
+    
+    nombre_catalogo = input("bienvenido/a al catalogo de belu👋🏽,por favor ingrese✍🏽 el nombre del catalogo que desea: ")
+    archivo_catalogo = nombre_catalogo + ".txt"
+    catalogo = CatalogoPeliculas(nombre_catalogo, archivo_catalogo)
+
+    while True:
+        print("\n--- Menú ---")
+        print("1. Agregar Película🎬")
+        print("2. Listar Películas🎬")
+        print("3. Eliminar Catálogo🚮")
+        print("4. Salir🚪")
+        opcion = input("elija una opción: ")
+        if opcion == '1':
+            nombre_peli = input("Ingresa el nombre de la película: ")
+            pelicula = Pelicula(nombre_peli)
+            catalogo.agregar(pelicula)
+        elif opcion == '2':
+            catalogo.listar()
+        elif opcion == '3':
+            confirm = input("¿Estás seguro que queres eliminar el catálogo🤔? (s/n): ")
+            if confirm.lower() == 's':
+                catalogo.eliminar()
+        elif opcion == '4':
+            print("Gracias por usar el catálogo de películas de belu🥰,hasta la proxima .")
+            break
+        else:
+            print("Opción inválida✖️. Intenta de nuevo.")
+
+if __name__ == "__main__":
+    ejecutar_programa()
