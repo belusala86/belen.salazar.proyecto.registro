@@ -1,0 +1,9 @@
+contiene:
+
+proyecto_catalogo
+
+---pelicula.py
+
+---catalogo.py
+
+---main.py
